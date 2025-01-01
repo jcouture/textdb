@@ -1,13 +1,16 @@
 use Mix.Config
 
 # Configure your database
+database_url =
+  case System.get_env("DATABASE_URL") do
+    nil -> raise "DATABASE_URL is missing"
+    url -> url
+  end
+
 config :textdb, Textdb.Repo,
-  username: "textdb",
-  password: "supersecret",
-  database: "textdb",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  url: database_url,
+  pool_size: 10,
+  show_sensitive_data_on_connection_error: true
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
